@@ -95,8 +95,6 @@ def make_lgb(data):
     
     dtrain = lgb.Dataset(train_vecs, label=train_labels)
     dtest = lgb.Dataset(val_vecs, label=val_labels)
-    print(dtrain)
-    print(dtest)
 
     param = {'num_leaves': 64, 'objective': 'binary', 'max_depth':6, 'learning_rate':0.3}
     param['metric'] = ['binary_logloss', 'auc']
@@ -110,13 +108,10 @@ def make_lgb(data):
     # score the model
     print('testing score')
     cm = confusion_matrix(val_labels, ypred_class)
-    print(pd.Series(val_labels).value_counts())
-    print(cm)
+   
     tn, fp, fn, tp = cm.ravel()
     fpr = fp / (fp + tn)
     fnr = fn / (fn + tp)
-    print(f"fpr: {fpr}")
-    print(f"fnr: {fnr}")
     
     classification_dict = classification_report(val_labels, ypred_class, target_names=['benign', 'harmful'], output_dict=True)
     return classification_dict['benign']['precision'], classification_dict['harmful']['precision'], classification_dict['benign']['recall'], classification_dict['harmful']['recall'], classification_dict['accuracy'], (fpr, fnr)
@@ -153,6 +148,10 @@ def main():
     output_dir = args.output_dir
     layer_size = args.layer_size
     hidden_layer_size = args.hidden_layer_size
+    
+    # make output directory if it doesn't exist
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
     
     train_vecs, train_labels, val_vecs, val_labels = load_activations(benign_input_dir, attack_input_dir, layer_size, hidden_layer_size)
     data = [train_vecs, train_labels, val_vecs, val_labels]

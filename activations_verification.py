@@ -19,12 +19,8 @@ def parse_args():
     return parser.parse_args()
 
 def activation_hook(module, input, output):
-    # awful
     activations[module.lidx,:] = output[0].detach().mean(1).flatten()
-    
-def initial_activation_hook(module, input):
-    # Save the initial activations before the first layer
-    activations[0,:] = input[0].detach().mean(1).flatten()
+
 
 def setup_model(model):
     tokenizer = AutoTokenizer.from_pretrained(model)
@@ -35,12 +31,9 @@ def setup_model(model):
         device_map="cuda",
     )
     model_layers = pipeline.model.model.layers
-    # Register hook to capture initial activations
-    first_layer = model_layers[0]
-    first_layer.register_forward_pre_hook(initial_activation_hook)
     
     for lidx, layer in enumerate(model_layers):
-        layer.lidx = lidx + 1  # Adjust index to accommodate initial activations
+        layer.lidx = lidx
         hook = layer.register_forward_hook(activation_hook)
         if lidx == (len(model_layers) - 1):
             break
@@ -63,14 +56,14 @@ def extract_activations():
     pipeline, tokenizer = setup_model(model_link)
 
 
-    for dataset_name in [attack_input_path, benign_input_path]:
+    for dataset_name, output_dir_class in [(attack_input_path, output_dir_attack), (benign_input_path, output_dir_benign)]:
         print(f"Extracting activations for {dataset_name}")
         df = pd.read_csv(dataset_name, header=0)
         
         # shuffle the dataframe before batching
         df = df.sample(frac=1).reset_index(drop=True)
         
-        batch_size = 500
+        batch_size = 256
         
         model = pipeline.model.model
         tokenizer.pad_token = tokenizer.eos_token
@@ -102,7 +95,7 @@ def extract_activations():
 
             # save batch_df
             print(f"Saving batch {batch_idx}")
-            batch_df.to_parquet(f"{output_dir}/activations_batch_{batch_idx:04d}.parquet")
+            batch_df.to_parquet(f"{output_dir_class}/activations_batch_{batch_idx:04d}.parquet")
             
             # reset batch_df
             batch_df = init_batch(df)
@@ -118,6 +111,12 @@ if __name__ == "__main__":
     output_dir = args.output_dir
     layer_size = args.layer_size
     hidden_layer_size = args.hidden_layer_size
+    
+    # make output directory if it doesn't exist
+    output_dir_benign = os.path.join(output_dir, "benign")
+    output_dir_attack = os.path.join(output_dir, "attack")
+    os.makedirs(output_dir_benign, exist_ok=True)
+    os.makedirs(output_dir_attack, exist_ok=True)
     
     # global activations var
     activations = torch.zeros(layer_size,hidden_layer_size).pin_memory().cuda()
