@@ -1,6 +1,6 @@
 # Model Activations Project
 
-This repository provides scripts for processing and verifying model activations using specified parameters. The scripts are designed to allow flexible usage, saving each output array into files as specified by user-defined arguments.
+This is the repository for the code that accompanies [Defending Large Language Models Against Attacks With Residual Stream Activation Analysis](https://arxiv.org/abs/2406.03230) This repository provides scripts for extracting and classifying model activations for custom datasets of prompts.
 
 ## Setup
 
@@ -12,27 +12,9 @@ pip install -r requirements.txt
 
 ## Scripts
 
-### 1. `llama2_activations_amelia_final.py`
+### 1. `activation_extraction.py`
 
-This script processes model activations and saves outputs in specified directories.
-
-#### Usage
-
-```bash
-python llama2_activations_amelia_final.py --model_link <model_link> --input_dir <input_directory> --output_dir <output_directory> --layer_size <layer_size> --hidden_layer_size <hidden_layer_size>
-```
-
-#### Arguments
-
-- `--model_link` : Hugging Face model link.
-- `--input_dir` : Path to the input directory containing data for processing.
-- `--output_dir` : Path to the output directory where results will be saved.
-- `--layer_size` : Size of the model layer.
-- `--hidden_layer_size` : Size of the hidden layer in the model.
-
-### 2. `activations_verification_final.py`
-
-This script verifies model activations and saves verification outputs as per the specified arguments.
+This script extracts model activations for each prompt provided and saves outputs in specified directories.
 
 #### Usage
 
@@ -45,6 +27,30 @@ python activations_verification_final.py --model_link <model_link> --input_dir <
 - `--model_link` : Hugging Face model link for verification.
 - `--input_dir` : Directory of input data for verification.
 - `--output_dir` : Directory to save verification outputs.
+- `--layer_size` : Size of the model layer.
+- `--hidden_layer_size` : Size of the hidden layer in the model.
+
+#### Example
+
+```bash
+python python activations_verification.py --model_link meta-llama/Llama-2-7b-chat-hf --benign_input_path benign_open_test_1000.csv --attack_input_path jb_open_test_1000.csv --output_dir output --layer_size 32 --hidden_layer_size 4096
+```
+
+### 2. `activation_classification.py`
+
+This script verifies model activations and saves verification outputs as per the specified arguments.
+
+#### Usage
+
+```bash
+python llama2_activations_amelia_fi.py --model_link <model_link> --input_dir <input_directory> --output_dir <output_directory> --layer_size <layer_size> --hidden_layer_size <hidden_layer_size>
+```
+
+#### Arguments
+
+- `--model_link` : Hugging Face model link.
+- `--input_dir` : Path to the input directory containing data for processing.
+- `--output_dir` : Path to the output directory where results will be saved.
 - `--layer_size` : Size of the model layer.
 - `--hidden_layer_size` : Size of the hidden layer in the model.
 
