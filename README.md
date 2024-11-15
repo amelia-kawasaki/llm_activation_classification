@@ -1,4 +1,4 @@
-# Model Activations Project
+# Extraction and Classification of LLM Activations
 
 This is the repository for the code that accompanies [Defending Large Language Models Against Attacks With Residual Stream Activation Analysis](https://arxiv.org/abs/2406.03230) This repository provides scripts for extracting and classifying model activations for custom datasets of prompts.
 
