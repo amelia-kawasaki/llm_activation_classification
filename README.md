@@ -55,7 +55,7 @@ python activation_classification.py --benign_input_dir <input_directory> --attac
 - `--layer_size` : Size of the model layer.
 - `--hidden_layer_size` : Size of the hidden layer in the model.
 
-## Example
+#### Example
 
 To run the activation processing script, you might use:
 
