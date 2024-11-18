@@ -34,7 +34,7 @@ python activation_extraction.py --model_link <model_link> --benign_input_path <i
 #### Example
 
 ```bash
-python activation_extraction.py --model_link meta-llama/Llama-2-7b-chat-hf --benign_input_path sample_data/benign_open_test_1000.csv --attack_input_path sample_data/jb_open_test_1000.csv --output_dir output --layer_size 32 --hidden_layer_size 4096
+python activation_extraction.py --model_link meta-llama/Llama-2-7b-chat-hf --benign_input_path sample_data/benign_orca.csv --attack_input_path sample_data/attack_jb.csv --output_dir output --layer_size 32 --hidden_layer_size 4096
 ```
 Please note, in order to run this example, you will need to be logged into the huggingface cli and will need access granted to the Llama 2 model.
 
