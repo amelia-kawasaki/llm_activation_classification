@@ -1,6 +1,6 @@
 # Extraction and Classification of LLM Activations
 
-This is the repository for the code that accompanies [Defending Large Language Models Against Attacks With Residual Stream Activation Analysis](https://arxiv.org/abs/2406.03230) This repository provides scripts for extracting and classifying model activations for custom datasets of prompts.
+This is the repository for the code that accompanies [Defending Large Language Models Against Attacks With Residual Stream Activation Analysis](https://arxiv.org/abs/2406.03230) This repository provides scripts for extracting and classifying model activations for custom datasets of prompts. This repo consists of the 2 scripts necessary to extract and classify activations as well as a small sample dataset to act as a reference. These datasets are small subsets sourced from [OpenOrca](https://huggingface.co/datasets/Open-Orca/OpenOrca) and [JailbreakV-28K](https://huggingface.co/datasets/JailbreakV-28K/JailBreakV-28k). To reproduce these results, run the setup script, followed by activation_extraction.py and activation_classification.py.
 
 ## Setup
 
@@ -24,9 +24,9 @@ python activation_extraction.py --model_link <model_link> --benign_input_path <i
 
 #### Arguments
 
-- `--model_link` : Hugging Face model link
-- `--benign_input_path` : path to csv file of benign prompts
-- `--attack_input_path` : path to csv file of attack prompts
+- `--model_link` : Hugging Face model link, ex: meta-llama/Llama-2-7b-chat-hf
+- `--benign_input_path` : path to csv file of benign prompts. The csv file should be one field, with the header "statement"
+- `--attack_input_path` : path to csv file of attack prompts. The csv file should be one field, with the header "statement"
 - `--output_dir` : Directory to save activations.
 - `--layer_size` : Number of layers in the model.
 - `--hidden_layer_size` : Size of the hidden layer in the model.
