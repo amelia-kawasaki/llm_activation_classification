@@ -158,13 +158,14 @@ def main():
     accuracy_l, b_precision_l, h_precision_l, b_recall_l, h_recall_l, fpr_l, fnr_l = train_all_layers(data, layer_size)
     
     # Save the output arrays to the output directory
-    pd.Series(accuracy_l).to_csv(f'{output_dir}/accuracy.csv', index=False)
-    pd.Series(b_precision_l).to_csv(f'{output_dir}/benign_precision.csv', index=False)
-    pd.Series(h_precision_l).to_csv(f'{output_dir}/attack_precision.csv', index=False)
-    pd.Series(b_recall_l).to_csv(f'{output_dir}/benign_recall.csv', index=False)
-    pd.Series(h_recall_l).to_csv(f'{output_dir}/attack_recall.csv', index=False)
-    pd.Series(fpr_l).to_csv(f'{output_dir}/fpr.csv', index=False)
-    pd.Series(fnr_l).to_csv(f'{output_dir}/fnr.csv', index=False)
+    pd.Series(accuracy_l).to_csv(f'{output_dir}/accuracy.csv', index=True, header=False)
+    pd.Series(b_precision_l).to_csv(f'{output_dir}/benign_precision.csv', index=True, header=False)
+    pd.Series(h_precision_l).to_csv(f'{output_dir}/attack_precision.csv', index=True, header=False)
+    pd.Series(b_recall_l).to_csv(f'{output_dir}/benign_recall.csv', index=True, header=False)
+    pd.Series(h_recall_l).to_csv(f'{output_dir}/attack_recall.csv', index=True, header=False)
+    pd.Series(fpr_l).to_csv(f'{output_dir}/fpr.csv', index=True, header=False)
+    pd.Series(fnr_l).to_csv(f'{output_dir}/fnr.csv', index=True, header=False)
+    print('Finished classification')
 
 if __name__ == "__main__":
     main()
